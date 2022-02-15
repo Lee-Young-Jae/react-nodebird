@@ -1,0 +1,48 @@
+{
+  "name": "react-nodebird-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next -p 3060",
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build",
+    "start": "cross-env NODE_ENV=production next start -p 3060"
+  },
+  "author": "LeeYoungJae",
+  "license": "ISC",
+  "dependencies": {
+    "@ant-design/icons": "^4.7.0",
+    "@next/bundle-analyzer": "^12.0.10",
+    "antd": "^4.18.2",
+    "axios": "^0.24.0",
+    "babel-plugin-styled-components": "^2.0.2",
+    "cross-env": "^7.0.3",
+    "echarts": "^5.2.2",
+    "echarts-for-react": "^3.0.2",
+    "eslint-config-prettier": "^8.3.0",
+    "immer": "^9.0.12",
+    "moment": "^2.29.1",
+    "next": "^12.0.10",
+    "next-redux-wrapper": "^6.0.2",
+    "prop-types": "^15.8.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
+    "react-slick": "^0.28.1",
+    "redux": "^4.1.2",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-saga": "^1.1.3",
+    "save": "^2.4.0",
+    "styled-components": "^5.3.3",
+    "swr": "^1.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.6.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "faker": "^4.1.0",
+    "shortid": "^2.2.16"
+  }
+}

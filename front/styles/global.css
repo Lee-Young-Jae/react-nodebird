@@ -1,0 +1,56 @@
+/* body {
+  font-family: "Single Day", cursive;
+} */
+
+.custom-shape-divider-top-1642783835 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.custom-shape-divider-top-1642783835 svg {
+  position: relative;
+  display: block;
+  width: calc(176% + 1.3px);
+  height: 256px;
+  transform: rotateY(180deg);
+}
+
+.custom-shape-divider-top-1642783835 .shape-fill {
+  fill: #5f2d88;
+}
+
+.custom-shape-divider-bottom-1642784645 {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.custom-shape-divider-bottom-1642784645 svg {
+  position: relative;
+  display: block;
+  width: calc(300% + 1.3px);
+  height: 256px;
+  transform: rotateY(180deg);
+}
+
+.custom-shape-divider-bottom-1642784645 .shape-fill {
+  fill: #61249eba;
+}
+
+.mainH1 {
+  font-family: "Dongle", sans-serif;
+  display: table;
+  margin: 4rem auto;
+  margin-top: 10rem;
+  font-weight: 400;
+  font-size: 6rem;
+  color: "#ffffff";
+}
