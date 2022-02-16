@@ -37,7 +37,7 @@ const Profile = () => {
   );
 
   const { data: followingsData, error: followingError } = useSWR(
-    `${backUrl}:3065/user/followings?limit=${followingsLimit}`,
+    `${backUrl}/user/followings?limit=${followingsLimit}`,
     fetcher
   );
 
