@@ -32,25 +32,25 @@ if (process.env.NODE_ENV === "production") {
   app.use(morgan("combined"));
   app.use(hpp());
   app.use(helmet());
+  app.use(
+    cors({
+      origin: "http://dev-ori.com", // 실 서비스에선 서비스 주소를 기입한다. 또한 true로 해두면 보낸곳의 주소가 자동으로 들어가기 때문에 편리하다.
+      credentials: true, // cors 모듈에서 쿠키 또한 공유가 되도록 한다.
+    })
+  );
 } else {
   app.use(morgan("dev"));
+  app.use(
+    cors({
+      origin: true, // 실 서비스에선 서비스 주소를 기입한다. 또한 true로 해두면 보낸곳의 주소가 자동으로 들어가기 때문에 편리하다.
+      credentials: true, // cors 모듈에서 쿠키 또한 공유가 되도록 한다.
+    })
+  ); //cors 모든 요청에  res.setHeader("Access-Control-Allow-Origin", "*"); 을 넣어준다.
 }
 
 // 라우터 연결보다 위에 작성해야하는 코드 미들웨어  use() 메서드는 express에 미들웨어를 장착하게 해준다.
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3060",
-      "http://dev-ori.com",
-      "http://15.164.33.190:433",
-      "http://15.164.33.190",
-    ], // 실 서비스에선 서비스 주소를 기입한다. 또한 true로 해두면 보낸곳의 주소가 자동으로 들어가기 때문에 편리하다.
-    credentials: true, // cors 모듈에서 쿠키 또한 공유가 되도록 한다.
-  })
-); //cors 모든 요청에  res.setHeader("Access-Control-Allow-Origin", "*"); 을 넣어준다.
 // 프론트로부터 post, fetch 등으로 받은 데이터를 req.body 안에 넣어주는 역할
-
 app.use("/", express.static(path.join(__dirname, "uploads"))); //__dirname(현재 디렉토리)의 upload디렉토리를 합쳐준다. __dirname + '\upload' 안하는 이유는? 운영체제마다 디렉토리 주소 시스템이 다르기 때문 (ex \upload /upload 등등)
 app.use(express.json()); // front에서 json형식으로 데이터를 보냈을때 이걸 json 형식으로 req.body에
 app.use(express.urlencoded({ extended: true })); //form에서 submit 했을때 urlencoded방식으로 넘어오기때문에 이걸 req.body에
