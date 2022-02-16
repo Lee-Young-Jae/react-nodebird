@@ -19,7 +19,7 @@ module.exports = {
   production: {
     username: "ori",
     password: process.env.DB_PASSWORD,
-    database: "database_production",
+    database: "react-nodebird",
     host: "127.0.0.1",
     dialect: "mysql",
   },
