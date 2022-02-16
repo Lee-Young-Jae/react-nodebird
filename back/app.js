@@ -42,7 +42,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3060",
-      "nodebird.com",
+      "dev-ori.com",
       "http://15.164.33.190:433",
       "http://15.164.33.190",
     ], // 실 서비스에선 서비스 주소를 기입한다. 또한 true로 해두면 보낸곳의 주소가 자동으로 들어가기 때문에 편리하다.
