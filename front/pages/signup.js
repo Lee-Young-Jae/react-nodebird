@@ -2,7 +2,7 @@ import Head from "next/head";
 import React, { useCallback, useState, useMemo, useEffect } from "react";
 import AppLayout from "../components/AppLayout";
 import { Form, Input, Checkbox, Button, message } from "antd";
-import useinput from "../hooks/useinput";
+import useinput from "../hooks/useInput";
 import { LOAD_MY_INFO_REQUEST, SIGN_UP_REQUEST } from "../reducers/user";
 import { useDispatch, useSelector } from "react-redux";
 import { LoadingOutlined } from "@ant-design/icons";

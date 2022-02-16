@@ -10,10 +10,11 @@ import {
   Overlay,
   SlickWrapper,
 } from "./styles";
+import { backUrl } from "../../config/config";
 
 const ImagesZoom = ({ images, onClose }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const myUrl = "http://localhost:3065/";
+  const myUrl = `${backUrl}/`;
 
   return (
     <Overlay>

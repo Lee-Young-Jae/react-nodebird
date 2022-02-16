@@ -3,8 +3,9 @@ import { all, fork } from "redux-saga/effects";
 import postSaga from "./post";
 import userSaga from "./user";
 import axios from "axios";
+import { backUrl } from "../config/config";
 
-axios.defaults.baseURL = "http://localhost:3065";
+axios.defaults.baseURL = backUrl; //"http://localhost:3065"
 axios.defaults.withCredentials = true; //사가에서 보내는 axios 요청들엔 withCredentials가 true로 공통적으로 들어간다. 서버와 쿠키 전달을 위함
 
 // ============ 이벤트 등록 ============
