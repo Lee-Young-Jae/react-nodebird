@@ -81,6 +81,6 @@ app.use("/hashtag", hashtagRouter); //prefix로 /hashtag를 붙인다.
 // 매개변수가 4개이면 에러처리 미들웨어 next("에러") 를 처리하는 부분 (커스텀 안하고 싶으면 안써도 된다)
 // app.use((err, req, res, next) => {});
 
-app.listen(3065, () => {
+app.listen(80, () => {
   console.log("서버 실행 중!");
 });
