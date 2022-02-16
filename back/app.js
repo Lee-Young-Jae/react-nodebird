@@ -40,7 +40,7 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(
   cors({
-    origin: true, // 실 서비스에선 서비스 주소를 기입한다. 또한 true로 해두면 보낸곳의 주소가 자동으로 들어가기 때문에 편리하다.
+    origin: ["http://localhost:3060", "nodebird.com", "http://3.37.36.58:433"], // 실 서비스에선 서비스 주소를 기입한다. 또한 true로 해두면 보낸곳의 주소가 자동으로 들어가기 때문에 편리하다.
     credentials: true, // cors 모듈에서 쿠키 또한 공유가 되도록 한다.
   })
 ); //cors 모든 요청에  res.setHeader("Access-Control-Allow-Origin", "*"); 을 넣어준다.
