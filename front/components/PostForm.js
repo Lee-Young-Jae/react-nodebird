@@ -123,9 +123,9 @@ const PostForm = () => {
           return (
             <div key={item} style={{ display: "inline-block" }}>
               <img
-                src={item.replace(/\/thumb\//, "/original/")}
+                src={item.replace(/\/thumb\//gi, "/original/")}
                 style={{ width: "200px" }}
-                alt={item}
+                alt={item.replace(/\/thumb\//gi, "/original/")}
               ></img>
               <div>
                 <Button onClick={onRemoveImage(index)}>제거</Button>
