@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Card, Comment, List, Popover, Modal } from "antd";
+import { Button, Card, Comment, List, Popover, Modal, Input } from "antd";
 import {
   EllipsisOutlined,
   HeartOutlined,
@@ -36,6 +36,7 @@ moment.locale("ko");
 const PostCard = ({ post }) => {
   // const [liked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
+  const [modifiedFormOpend, setModifiedFormOpend] = useState(false);
   const { me } = useSelector((state) => state.user);
   const id = me?.id; //me && me.id   <= optional chaining 연산자
   //위 두줄을 이렇게 줄일 수 있음 const id = useSelector((state)=> state.user.me?.id);
@@ -91,6 +92,10 @@ const PostCard = ({ post }) => {
     });
   }, [id]);
 
+  const onModifyBtn = useCallback(() => {
+    setModifiedFormOpend((prev) => !prev);
+  }, [modifiedFormOpend]);
+
   const liked = post.Likers.find((e) => e.id === id);
 
   const cardStyle = useMemo(
@@ -126,98 +131,113 @@ const PostCard = ({ post }) => {
   };
   return (
     <>
-      <Card
-        style={cardStyle}
-        // title={post.User.nickname}
-        cover={post.Images[0] && <PostImages images={post.Images}></PostImages>}
-        actions={[
-          <RetweetOutlined key="retweet" onClick={onRetweet}></RetweetOutlined>,
-          liked ? (
-            <HeartTwoTone
-              twoToneColor="#eb2f96"
-              key="heart"
-              onClick={onUnlike}
-            ></HeartTwoTone>
+      {modifiedFormOpend ? (
+        <>
+          <Input placeholder="수정할내용을 입력하세용"></Input>
+          <Button onclick={onModifyBtn}>취소</Button>
+          <Button>수정</Button>
+        </>
+      ) : (
+        <Card
+          style={cardStyle}
+          // title={post.User.nickname}
+          cover={
+            post.Images[0] && <PostImages images={post.Images}></PostImages>
+          }
+          actions={[
+            <RetweetOutlined
+              key="retweet"
+              onClick={onRetweet}
+            ></RetweetOutlined>,
+            liked ? (
+              <HeartTwoTone
+                twoToneColor="#eb2f96"
+                key="heart"
+                onClick={onUnlike}
+              ></HeartTwoTone>
+            ) : (
+              <HeartOutlined key="heart" onClick={onLike}></HeartOutlined>
+            ),
+            <MessageOutlined
+              key="comment"
+              onClick={onToggleComment}
+            ></MessageOutlined>,
+            <Popover
+              key="more"
+              content={
+                <Button.Group>
+                  {id && id === post.User.id ? (
+                    <>
+                      {!post.RetweetId && (
+                        <Button onClick={onModifyBtn}>수정</Button>
+                      )}
+                      <Button
+                        type="danger"
+                        onClick={onRemovePost}
+                        loading={removePostLoading}
+                      >
+                        삭제
+                      </Button>
+                    </>
+                  ) : (
+                    <Button type="danger">신고</Button>
+                  )}
+                </Button.Group>
+              }
+            >
+              <EllipsisOutlined></EllipsisOutlined>
+            </Popover>,
+          ]}
+          title={
+            post.Retweet ? `${post.User.nickname} 님의 리트윗` : timeTable()
+            //post.createdAt.slice(0, 19).replace("T", " ") + " 작성됨" // 2022-02-08T15:05:32.000Z
+          }
+          extra={id && <FollowButton post={post}></FollowButton>}
+        >
+          {post.RetweetId && post.Retweet ? (
+            <Card
+              cover={
+                post.Retweet.Images[0] && (
+                  <PostImages images={post.Retweet.Images}></PostImages>
+                )
+              }
+            >
+              <div style={{ float: "right" }}>
+                {moment(post.Retweet.createdAt, "YYYYMMDD").fromNow()}
+              </div>
+              <Card.Meta
+                avatar={
+                  <Link href={`/user/${post.Retweet.User.id}`}>
+                    <a>
+                      <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                    </a>
+                  </Link>
+                }
+                title={post.Retweet.User.nickname}
+                description={
+                  <PostCardContent
+                    postData={post.Retweet.content}
+                  ></PostCardContent>
+                }
+              ></Card.Meta>
+            </Card>
           ) : (
-            <HeartOutlined key="heart" onClick={onLike}></HeartOutlined>
-          ),
-          <MessageOutlined
-            key="comment"
-            onClick={onToggleComment}
-          ></MessageOutlined>,
-          <Popover
-            key="more"
-            content={
-              <Button.Group>
-                {id && id === post.User.id ? (
-                  <>
-                    {!post.RetweetId && <Button>수정</Button>}
-                    <Button
-                      type="danger"
-                      onClick={onRemovePost}
-                      loading={removePostLoading}
-                    >
-                      삭제
-                    </Button>
-                  </>
-                ) : (
-                  <Button type="danger">신고</Button>
-                )}
-              </Button.Group>
-            }
-          >
-            <EllipsisOutlined></EllipsisOutlined>
-          </Popover>,
-        ]}
-        title={
-          post.Retweet ? `${post.User.nickname} 님의 리트윗` : timeTable()
-          //post.createdAt.slice(0, 19).replace("T", " ") + " 작성됨" // 2022-02-08T15:05:32.000Z
-        }
-        extra={id && <FollowButton post={post}></FollowButton>}
-      >
-        {post.RetweetId && post.Retweet ? (
-          <Card
-            cover={
-              post.Retweet.Images[0] && (
-                <PostImages images={post.Retweet.Images}></PostImages>
-              )
-            }
-          >
-            <div style={{ float: "right" }}>
-              {moment(post.Retweet.createdAt, "YYYYMMDD").fromNow()}
-            </div>
             <Card.Meta
               avatar={
-                <Link href={`/user/${post.Retweet.User.id}`}>
+                <Link href={`/user/${post.User.id}`}>
                   <a>
-                    <Avatar>{post.Retweet.User.nickname[0]}</Avatar>
+                    <Avatar>{post.User.nickname[0]}</Avatar>
                   </a>
                 </Link>
               }
-              title={post.Retweet.User.nickname}
+              title={post.User.nickname}
               description={
-                <PostCardContent
-                  postData={post.Retweet.content}
-                ></PostCardContent>
+                <PostCardContent postData={post.content}></PostCardContent>
               }
             ></Card.Meta>
-          </Card>
-        ) : (
-          <Card.Meta
-            avatar={
-              <Link href={`/user/${post.User.id}`}>
-                <a>
-                  <Avatar>{post.User.nickname[0]}</Avatar>
-                </a>
-              </Link>
-            }
-            title={post.User.nickname}
-            description={
-              <PostCardContent postData={post.content}></PostCardContent>
-            }
-          ></Card.Meta>
-        )}
-      </Card>
+          )}
+        </Card>
+      )}
       {commentFormOpened && (
         <div>
           <CommentForm post={post}></CommentForm>

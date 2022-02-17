@@ -78,10 +78,7 @@ const Post = () => {
                   : "https://nodebird.com/favicon.ico"
               }
             />
-            <meta
-              property="og:url"
-              content={`https://dev-ori.com/post/${id}`}
-            />
+            <meta property="og:url" content={`http://dev-ori.com/post/${id}`} />
           </>
         ) : (
           <title>짹짹이 | 존재하지 않는 게시글 입니다.</title>
