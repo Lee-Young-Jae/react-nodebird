@@ -123,7 +123,7 @@ const PostForm = () => {
           return (
             <div key={item} style={{ display: "inline-block" }}>
               <img
-                src={`${item.replace(/\/thumb\//, "/original/")}`}
+                src={item.replace(/\/thumb\//, "/original/")}
                 style={{ width: "200px" }}
                 alt={item}
               ></img>
