@@ -170,7 +170,10 @@ router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   //POST /post/images
   try {
     console.log(req.files);
-    res.json(req.files.map((e) => e.location)); // local에선 e.filename이였지만 S3에 올릴땐 location
+    res.json(
+      // local에선 e.filename이였지만 S3에 올릴땐 location // 주소에 original이 있다면 thumb로
+      req.files.map((e) => e.location.replace(/\/original\//, "/thumb/"))
+    );
   } catch (error) {
     console.error();
     next(error);

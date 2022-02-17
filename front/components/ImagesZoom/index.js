@@ -33,7 +33,10 @@ const ImagesZoom = ({ images, onClose }) => {
           >
             {images.map((item) => (
               <ImgWrapper key={item.src}>
-                <img src={item.src} alt={item.src}></img>
+                <img
+                  src={`${item.src.replace(/\/thumb\//, "/original/")}`} // 상세보기만 original 파일의 주소
+                  alt={item.src}
+                ></img>
               </ImgWrapper>
             ))}
           </Slick>
