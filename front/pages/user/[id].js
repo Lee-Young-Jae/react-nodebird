@@ -19,7 +19,7 @@ const User = () => {
   const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
     (state) => state.post
   );
-  const { userInfo } = useSelector((state) => state.user);
+  const { userInfo, me } = useSelector((state) => state.user);
 
   useEffect(() => {
     const onScroll = () => {
@@ -46,7 +46,7 @@ const User = () => {
 
   return (
     <AppLayout>
-      {userInfo && (
+      {userInfo && userInfo.id !== me?.id && (
         <Head>
           <title>
             {userInfo.nickname}
@@ -64,11 +64,8 @@ const User = () => {
             property="og:description"
             content={`${userInfo.nickname}님의 게시글`}
           />
-          <meta
-            property="og:image"
-            content="https://nodebird.com/favicon.ico"
-          />
-          <meta property="og:url" content={`https://nodebird.com/user/${id}`} />
+          <meta property="og:image" content="https://dev-ori.com/favicon.ico" />
+          <meta property="og:url" content={`http://dev-ori.com/user/${id}`} />
         </Head>
       )}
       {userInfo ? (

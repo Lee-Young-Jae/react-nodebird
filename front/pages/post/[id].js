@@ -80,7 +80,7 @@ const Post = () => {
             />
             <meta
               property="og:url"
-              content={`https://nodebird.com/post/${id}`}
+              content={`https://dev-ori.com/post/${id}`}
             />
           </>
         ) : (
