@@ -11,7 +11,6 @@ import {
   REMOVE_IMAGE,
   ADD_POST_REQUEST,
 } from "../reducers/post";
-import { backUrl } from "../config/config";
 
 function warning(title, content) {
   Modal.warning({
@@ -123,11 +122,7 @@ const PostForm = () => {
         {imagePaths.map((item, index) => {
           return (
             <div key={item} style={{ display: "inline-block" }}>
-              <img
-                src={`${backUrl}/${item}`}
-                style={{ width: "200px" }}
-                alt={item}
-              ></img>
+              <img src={item} style={{ width: "200px" }} alt={item}></img>
               <div>
                 <Button onClick={onRemoveImage(index)}>제거</Button>
               </div>

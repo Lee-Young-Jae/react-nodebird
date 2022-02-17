@@ -3,6 +3,9 @@ const multer = require("multer");
 const path = require("path"); //path node 제공
 const fs = require("fs"); //fileSystem node 제공
 
+const multerS3 = require("multer-s3"); // 멀터를 통해 AWS S3로 올릴때 사용
+const AWS = require("aws-sdk"); // S3 접근권한 얻기 위해 사용
+
 const { Post, Comment, Image, User, Hashtag } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 
@@ -15,19 +18,34 @@ try {
   fs.mkdirSync("uploads"); //uplaod 디렉토리 생성
 }
 
+//AWS
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: "ap-northeast-2",
+});
+
 //이미지 업로드용 라우터
 const upload = multer({
   //어디에 저장할 것인지
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, "uploads");
-    },
-    filename(req, file, done) {
-      //ex Ori.jpg 라는 파일이 있을때
-      //파일명 중복 처리 (기본적으로 노드는 파일명이 중복되면 기존파일에 덮어쓴다)
-      const ext = path.extname(file.originalname); //확장자 추출(.jpg) //path는 노드에서 제공하는 모듈
-      const bassname = path.basename(file.originalname, ext); //Ori라는 확장제를 제외한 파일명 추출
-      done(null, bassname + "_" + new Date().getTime() + ext); // Ori202202031552512.jpg
+  // storage: multer.diskStorage({
+  //   destination(req, file, done) {
+  //     done(null, "uploads");
+  //   },
+  //   filename(req, file, done) {
+  //     //ex Ori.jpg 라는 파일이 있을때
+  //     //파일명 중복 처리 (기본적으로 노드는 파일명이 중복되면 기존파일에 덮어쓴다)
+  //     const ext = path.extname(file.originalname); //확장자 추출(.jpg) //path는 노드에서 제공하는 모듈
+  //     const bassname = path.basename(file.originalname, ext); //Ori라는 확장자를 제외한 파일명 추출
+  //     done(null, bassname + "_" + new Date().getTime() + ext); // Ori202202031552512.jpg
+  //   },
+  // }),
+  storage: multerS3({
+    s3: new AWS.S3(), //S3권한을 얻음
+    bucket: "react-nodebird-ori", //버킷 이름
+    key(req, file, cb) {
+      //저장되는 파일 이름
+      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, //20MB 파일 사이즈 제한
@@ -152,7 +170,7 @@ router.post("/images", isLoggedIn, upload.array("image"), (req, res, next) => {
   //POST /post/images
   try {
     console.log(req.files);
-    res.json(req.files.map((e) => e.filename));
+    res.json(req.files.map((e) => e.location)); // local에선 e.filename이였지만 S3에 올릴땐 location
   } catch (error) {
     console.error();
     next(error);

@@ -10,11 +10,9 @@ import {
   Overlay,
   SlickWrapper,
 } from "./styles";
-import { backUrl } from "../../config/config";
 
 const ImagesZoom = ({ images, onClose }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const myUrl = `${backUrl}/`;
 
   return (
     <Overlay>
@@ -35,7 +33,7 @@ const ImagesZoom = ({ images, onClose }) => {
           >
             {images.map((item) => (
               <ImgWrapper key={item.src}>
-                <img src={myUrl + item.src} alt={myUrl + item.src}></img>
+                <img src={item.src} alt={item.src}></img>
               </ImgWrapper>
             ))}
           </Slick>
