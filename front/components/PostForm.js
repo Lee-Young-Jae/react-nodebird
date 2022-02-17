@@ -120,12 +120,12 @@ const PostForm = () => {
       </div>
       <div>
         {imagePaths.map((item, index) => {
-          console.log(item);
+          console.log(item, "item");
           return (
             <div key={item} style={{ display: "inline-block" }}>
               <img
-                src={item.replace(/thumb/, "/original/")}
-                alt={item.replace(/\thumb\//, "/original/")}
+                src={item.replace(/\/thumb\//, "/original/")}
+                alt={item.replace(/thumb/, "/original/")}
                 style={{ width: "200px" }}
               ></img>
               <div>
