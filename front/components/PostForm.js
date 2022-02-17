@@ -122,7 +122,11 @@ const PostForm = () => {
         {imagePaths.map((item, index) => {
           return (
             <div key={item} style={{ display: "inline-block" }}>
-              <img src={item} style={{ width: "200px" }} alt={item}></img>
+              <img
+                src={`${item.replace(/\/thumb\//, "/original/")}`}
+                style={{ width: "200px" }}
+                alt={item}
+              ></img>
               <div>
                 <Button onClick={onRemoveImage(index)}>제거</Button>
               </div>
