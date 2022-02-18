@@ -64,7 +64,7 @@ const User = () => {
             property="og:description"
             content={`${userInfo.nickname}님의 게시글`}
           />
-          <meta property="og:image" content="https://dev-ori.com/favicon.ico" />
+          <meta property="og:image" content="http://dev-ori.com/favicon.ico" />
           <meta property="og:url" content={`http://dev-ori.com/user/${id}`} />
         </Head>
       )}
