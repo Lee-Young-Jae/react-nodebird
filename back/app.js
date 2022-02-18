@@ -88,5 +88,6 @@ app.use("/hashtag", hashtagRouter); //prefix로 /hashtag를 붙인다.
 // app.use((err, req, res, next) => {});
 
 app.listen(80, () => {
+  // 실서버 :80  // 개발서버 :3060
   console.log("서버 실행 중!");
 });

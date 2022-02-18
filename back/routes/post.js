@@ -343,7 +343,59 @@ router.delete("/:postId/like", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.delete("/:postId", isLoggedIn, async (req, res) => {
+router.patch("/:postId", isLoggedIn, async (req, res, next) => {
+  //PATCH /post/1/
+  try {
+    const $hashtags = req.body.content.match(/#[^\s#]+/g);
+
+    const set = new Set($hashtags); //set객체로 전환하여 중복 제거
+    const hashtags = [...set]; //전개 연산자로 배열로 반환// forEach()나  Array.from()으로도 가능
+
+    await Post.update(
+      {
+        content: req.body.content,
+      },
+      {
+        where: { id: req.params.postId, UserId: req.user.id },
+      }
+    );
+
+    const post = await Post.findOne({
+      content: req.body.content,
+      UserId: req.user.id, //로그인을 했기때문에 user에 들어있다.
+    });
+
+    if (!post) {
+      return res.status(404).send("게시글이 존재하지 않습니다.");
+    }
+    if (hashtags) {
+      const result = await Promise.all(
+        hashtags.map((e) => {
+          return Hashtag.findOrCreate({
+            //없다면 등록 있다면 return
+            where: { name: e.slice(1).toLowerCase() },
+          });
+        })
+      );
+      await post.setHashtags(
+        result.map((e) => {
+          //findOrCreate의 결과는 [[리액트, true], [노드, false]] 꼴로 리턴되기 때문에 map함수로 바깥 배열을 처리  // 두번째 인자는 find되었는지 생성되었는지를 알려주는 boolean 값
+          return e[0];
+        })
+      );
+    }
+
+    res.status(200).json({
+      PostId: parseInt(req.params.postId, 10),
+      content: req.body.content,
+    });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.delete("/:postId", isLoggedIn, async (req, res, next) => {
   //DELETE /post/1/
   try {
     await Post.destroy({
